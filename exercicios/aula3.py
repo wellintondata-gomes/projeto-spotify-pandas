@@ -6,8 +6,6 @@ Topicos aplicados:
 - Resumo estatistico (sum, mean, max, min, describe)
 - Agrupamento com groupby
 - Ordenacao com sort_values
-
-Preencha as funcoes marcadas com `# TODO`.
 """
 
 import pandas as pd
@@ -22,112 +20,139 @@ def estatisticas_gerais(df: pd.DataFrame) -> dict:
       - ano_mais_recente: maior released_year
       - ano_mais_antigo: menor released_year
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao estatisticas_gerais ainda nao implementada (aula 3)")
+
+    return {
+        'total_streams': df['streams'].sum(),
+        'media_bpm': df['bpm'].mean(),
+        'media_danceability': df['danceability_%'].mean(),
+        'ano_mais_recente': df['released_year'].max(),
+        'ano_mais_antigo': df['released_year'].min()
+    }
 
 
 def top_n_artistas_por_streams(df: pd.DataFrame, n: int = 10) -> pd.Series:
     """
-    Retorna uma Series com os N artistas que mais somam streams, em ordem
-    decrescente.
-
-    Passos: groupby + sum + sort_values + head.
+    Retorna uma Series com os N artistas que mais somam streams.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao top_n_artistas_por_streams ainda nao implementada (aula 3)")
+
+    return (
+        df.groupby('artist(s)_name')['streams']
+        .sum()
+        .sort_values(ascending=False)
+        .head(n)
+    )
 
 
 def media_features_por_modo(df: pd.DataFrame) -> pd.DataFrame:
     """
     Agrupa por 'mode' (Major / Minor) e retorna a media de:
-      - 'danceability_%'
-      - 'energy_%'
-      - 'valence_%'
+      - danceability_%
+      - energy_%
+      - valence_%
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao media_features_por_modo ainda nao implementada (aula 3)")
+
+    return (
+        df.groupby('mode')[
+            ['danceability_%', 'energy_%', 'valence_%']
+        ]
+        .mean()
+    )
 
 
 def lancamentos_por_ano(df: pd.DataFrame) -> pd.Series:
     """
-    Contagem de musicas lancadas por ano, ordenada do ano mais antigo para
-    o mais recente.
-
-    Dica: groupby('released_year').size().
+    Contagem de musicas lancadas por ano.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao lancamentos_por_ano ainda nao implementada (aula 3)")
+
+    return (
+        df.groupby('released_year')
+        .size()
+        .sort_index()
+    )
 
 
 def artista_mais_streamado_do_ano(df: pd.DataFrame, ano: int) -> str:
     """
-    Retorna o nome do artista que mais somou streams em um ano.
-
-    Passos: filtrar pelo ano -> groupby + sum -> sort -> pegar o primeiro.
-
-    Se nao houver musicas no ano, retornar "Nenhuma musica encontrada para {ano}".
+    Retorna o artista que mais somou streams em um determinado ano.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao artista_mais_streamado_do_ano ainda nao implementada (aula 3)")
+
+    df_ano = df[df['released_year'] == ano]
+
+    if df_ano.empty:
+        return f"Nenhuma musica encontrada para {ano}"
+
+    return (
+        df_ano.groupby('artist(s)_name')['streams']
+        .sum()
+        .sort_values(ascending=False)
+        .index[0]
+    )
 
 
 def top_n_musicas_mais_dancantes(df: pd.DataFrame, n: int = 10) -> pd.DataFrame:
     """
-    Retorna as N musicas com maior 'danceability_%', em ordem decrescente.
-
-    Devolva um DataFrame com colunas ['track_name', 'artist(s)_name',
-    'danceability_%'].
-
-    Dica: sort_values na coluna 'danceability_%' com ascending=False, depois
-    head(n) e selecionar as colunas.
+    Retorna as N musicas mais dancantes.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao top_n_musicas_mais_dancantes ainda nao implementada (aula 3)")
+
+    return (
+        df.sort_values(
+            by='danceability_%',
+            ascending=False
+        )
+        .head(n)[
+            ['track_name', 'artist(s)_name', 'danceability_%']
+        ]
+    )
 
 
 def streams_por_decada(df: pd.DataFrame) -> pd.Series:
     """
-    Agrupa por DECADA de lancamento e retorna a soma de streams por decada.
-
-    Exemplo: ano 2017 -> decada 2010; ano 1985 -> decada 1980.
-
-    Dica: crie uma coluna auxiliar `decada = (released_year // 10) * 10` no
-    DataFrame (use df.copy() para nao alterar o original). Depois groupby
-    na decada somando streams. Ordene por decada (sort_index).
+    Soma os streams por decada.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao streams_por_decada ainda nao implementada (aula 3)")
+
+    df_novo = df.copy()
+
+    df_novo['decada'] = (
+        df_novo['released_year'] // 10
+    ) * 10
+
+    return (
+        df_novo.groupby('decada')['streams']
+        .sum()
+        .sort_index()
+    )
 
 
 def bpm_medio_por_modo(df: pd.DataFrame) -> pd.Series:
     """
-    Retorna uma Series com o BPM medio para cada modo (Major e Minor).
-
-    Dica: groupby('mode')['bpm'].mean().
+    Retorna o BPM medio por modo.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao bpm_medio_por_modo ainda nao implementada (aula 3)")
+
+    return (
+        df.groupby('mode')['bpm']
+        .mean()
+    )
 
 
 def musicas_por_quantidade_de_artistas(df: pd.DataFrame) -> pd.Series:
     """
-    Quantas musicas tem 1 artista, 2 artistas, 3 artistas... (colaboracoes).
-
-    Retorne uma Series indexada por 'artist_count' com a contagem de musicas
-    de cada categoria, ordenada por quantidade de artistas (ascendente).
-
-    Dica: value_counts() na coluna 'artist_count', depois sort_index().
+    Conta quantas musicas existem para cada quantidade de artistas.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao musicas_por_quantidade_de_artistas ainda nao implementada (aula 3)")
+
+    return (
+        df['artist_count']
+        .value_counts()
+        .sort_index()
+    )
 
 
 def ano_com_mais_streams(df: pd.DataFrame) -> int:
     """
-    Retorna o ANO em que a soma total de streams (de musicas lancadas
-    naquele ano) foi a maior.
-
-    Passos: groupby('released_year') somando streams -> .idxmax()
+    Retorna o ano que acumulou mais streams.
     """
-    # TODO: implemente
-    raise NotImplementedError("Funcao ano_com_mais_streams ainda nao implementada (aula 3)")
+
+    return (
+        df.groupby('released_year')['streams']
+        .sum()
+        .idxmax()
+    )

@@ -28,6 +28,9 @@ def criar_series_simples(valores: list, indices: list) -> pd.Series:
     Dica: pd.Series(data=..., index=...)
     """
     # TODO: implemente
+    
+
+    return pd.Series(data=valores, index=indices)
     raise NotImplementedError("Funcao criar_series_simples ainda nao implementada (aula 1)")
 
 
@@ -41,6 +44,9 @@ def criar_dataframe_de_dict(dados: dict) -> pd.DataFrame:
       -> DataFrame com colunas 'nome' e 'idade'
     """
     # TODO: implemente
+
+    def criar_dataframe_de_dict(dados: dict) -> pd.DataFrame:
+      return pd.DataFrame(dados)
     raise NotImplementedError("Funcao criar_dataframe_de_dict ainda nao implementada (aula 1)")
 
 
@@ -51,6 +57,8 @@ def obter_dimensoes(df: pd.DataFrame) -> tuple:
     Dica: o atributo .shape ja retorna uma tupla pronta.
     """
     # TODO: implemente
+    def obter_dimensoes(df: pd.DataFrame) -> tuple:
+      return df.shape
     raise NotImplementedError("Funcao obter_dimensoes ainda nao implementada (aula 1)")
 
 
@@ -68,6 +76,8 @@ def renomear_colunas(df: pd.DataFrame, mapeamento: dict) -> pd.DataFrame:
     Dica: df.rename(columns=mapeamento) ja retorna um novo df.
     """
     # TODO: implemente
+    def renomear_colunas(df: pd.DataFrame, mapeamento: dict) -> pd.DataFrame:
+      return df.rename(columns=mapeamento)
     raise NotImplementedError("Funcao renomear_colunas ainda nao implementada (aula 1)")
 
 
@@ -82,6 +92,8 @@ def definir_indice(df: pd.DataFrame, coluna: str) -> pd.DataFrame:
     Dica: df.set_index(coluna)
     """
     # TODO: implemente
+    def definir_indice(df: pd.DataFrame, coluna: str) -> pd.DataFrame:
+      return df.set_index(coluna)
     raise NotImplementedError("Funcao definir_indice ainda nao implementada (aula 1)")
 
 
@@ -93,4 +105,6 @@ def tipos_das_colunas(df: pd.DataFrame) -> pd.Series:
     Dica: o atributo .dtypes ja retorna isso.
     """
     # TODO: implemente
+    def tipos_das_colunas(df: pd.DataFrame) -> pd.Series:
+      return df.dtypes
     raise NotImplementedError("Funcao tipos_das_colunas ainda nao implementada (aula 1)")
